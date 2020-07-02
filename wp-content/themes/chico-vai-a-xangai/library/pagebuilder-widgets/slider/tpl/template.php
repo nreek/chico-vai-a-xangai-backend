@@ -1,0 +1,1 @@
+<SmartSlider hash="<?= $hash ?>"></SmartSlider>
