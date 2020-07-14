@@ -126,11 +126,62 @@ function film_meta_box_film()
         </style>
 
         <script>
+            function addContent(type, title, el) {
+                console.log(type, title)
+
+                let form = new FormData();
+                form.append('type', type)
+                form.append('title', title)
+
+                fetch('/wp-json/chico/v1/admin_add', {
+                    method : 'POST',
+                    body : form 
+                }).then(response => response.json())
+                .then(data => {
+                    if(data.post) {
+                        console.log(el)
+                        el.style.display = 'none'
+                    }
+                })
+            }
+
             function setFilm(imdbID) {
                 fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=4a4da14b`)
                 .then( response => {
+                    clearFilmsHtml();
+
                     response.json().then( data => {
-                        document.querySelector('.editor-post-title__input').value = data.Title
+                        let { Title, Runtime, Year, Language, Production } = data;
+
+                        document.querySelector('.editor-post-title__input').value = Title
+                        document.querySelector('#length').value = Runtime
+                        document.querySelector('#year').value = Year
+                        document.querySelector('#language').value = Language
+                        document.querySelector('#production').value = Production
+
+                        let $results = document.getElementById('movie_results');
+                        $results.innerHTML = `
+                            <div style='display: flex; align-items: flex-start; font-size: 0'>
+                                <a href='${data.Poster}' target="_blank" download><img src="${data.Poster}" style="margin-right: 15px;max-width: 200px;border-radius: 10px;border: 1px solid black;"></a>
+                                <div style="column-count: 3; column-gap: 20px">
+                                    ${ Object.keys(data).map(key => {
+                                        if(key != 'Poster' && key != 'Ratings'){
+                                            return (['Director', 'Writer', 'Actors']).indexOf(key) == -1 ? 
+                                                `<p style="margin-bottom: 0"><strong>${ key }</strong>: ${ data[key] }</p>` :
+                                                `<p style="margin-bottom: 0; font-weight: bold">${key}:</p>
+                                                ${data[key].split(',').map(p => {
+                                                    if(p != 'N/A')
+                                                        return `
+                                                        <div style="text: center; font-size: 13px; margin-bottom: 5px;">
+                                                            <span>${p.replace(/ *\([^)]*\) */g, "")}</span>
+                                                            <a onclick="addContent('person', '${p.replace(/ *\([^)]*\) */g, "")}', this)" style="background: #efefef;text-decoration: none;border-radius: 5px;padding: 2px 10px;text-transform: uppercase;font-size: 10px;border: 1px solid;" href='javascript:void(0);'>Cadastrar</a>
+                                                        </div>`
+                                                })}`
+                                        }
+                                    }) }
+                                </div>
+                            </div>
+                        `;
                     })
                 })
             }

@@ -87,16 +87,16 @@ add_action('cmb2_admin_init', function () {
         $cmb_post->add_field( array(
             'name'    => __( 'Posts Relacionados', 'yourtextdomain' ),
             'id'      => 'related_posts',
-            'type'    => 'custom_attached_posts',
-            'column'  => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column
-            'options' => array(
-                'show_thumbnails' => false, // Show thumbnails on the left
-                'filter_boxes'    => true, // Show a text box for filtering the results
-                'query_args'      => array(
-                    'posts_per_page' => 30,
-                    'post_type'      => 'post',
-                ), // override the get_posts args
-            ),
+                'type'    => 'custom_attached_posts',
+                'column'  => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column
+                'options' => array(
+                    'show_thumbnails' => false, // Show thumbnails on the left
+                    'filter_boxes'    => true, // Show a text box for filtering the results
+                    'query_args'      => array(
+                        'posts_per_page' => 30,
+                        'post_type'      => 'post',
+                    ), // override the get_posts args
+                ),
         ) );
     }
 
@@ -167,6 +167,81 @@ add_action('cmb2_admin_init', function () {
         'context' => 'normal',
         'priority' => 'high',
         'show_names' => true,
+    ));
+
+    $cmb_film->add_field(array(
+        'name' => 'Duração',
+        'id' => 'length',
+        'type' => 'text',
+    ));
+
+    $cmb_film->add_field(array(
+        'name' => 'Ano',
+        'id' => 'year',
+        'type' => 'text',
+    ));
+
+    $cmb_film->add_field(array(
+        'name' => 'Países',
+        'id' => 'countries',
+        'type' => 'text',
+    ));
+
+    $cmb_film->add_field(array(
+        'name' => 'Idioma',
+        'id' => 'language',
+        'type' => 'text',
+    ));
+
+    $cmb_film->add_field(array(
+        'name' => 'Produtora',
+        'id' => 'production',
+        'type' => 'text',
+    ));
+    
+    $cmb_film->add_field(array(
+        'name' => 'Diretor',
+        'id' => 'director',
+        'type'    => 'custom_attached_posts',
+        'column'  => true,
+        'options' => array(
+            'show_thumbnails' => true, // Show thumbnails on the left
+            'filter_boxes'    => true, // Show a text box for filtering the results
+            'query_args'      => array(
+                'posts_per_page' => 30,
+                'post_type'      => 'person',
+            ), 
+        ),
+    ));
+
+    $cmb_film->add_field(array(
+        'name' => 'Roteiro',
+        'id' => 'writer',
+        'type'    => 'custom_attached_posts',
+        'column'  => true,
+        'options' => array(
+            'show_thumbnails' => true, // Show thumbnails on the left
+            'filter_boxes'    => true, // Show a text box for filtering the results
+            'query_args'      => array(
+                'posts_per_page' => 30,
+                'post_type'      => 'person',
+            ), 
+        ),
+    ));
+
+    $cmb_film->add_field(array(
+        'name' => 'Atores',
+        'id' => 'actors',
+        'type'    => 'custom_attached_posts',
+        'column'  => true,
+        'options' => array(
+            'show_thumbnails' => true, // Show thumbnails on the left
+            'filter_boxes'    => true, // Show a text box for filtering the results
+            'query_args'      => array(
+                'posts_per_page' => 30,
+                'post_type'      => 'person',
+            ), 
+        ),
     ));
 
 
